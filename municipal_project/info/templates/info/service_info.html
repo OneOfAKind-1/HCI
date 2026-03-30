@@ -1,0 +1,742 @@
+{% extends "base.html" %}
+{% block content %}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f7f5;
+    --surface: #ffffff;
+    --surface-2: #f2f2ef;
+    --border: #e4e4df;
+    --border-focus: #1a1a1a;
+    --text-primary: #1a1a1a;
+    --text-secondary: #6b6b65;
+    --text-muted: #9b9b94;
+    --accent: #1a1a1a;
+    --accent-soft: #f0f0ec;
+    --danger: #c94b4b;
+    --radius-sm: 6px;
+    --radius: 10px;
+    --radius-lg: 16px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow: 0 4px 16px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    --font: 'DM Sans', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+    --transition: 0.18s ease;
+  }
+
+  body { background: var(--bg); font-family: var(--font); color: var(--text-primary); }
+
+  /* ── Layout ── */
+  .services-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    background: var(--accent);
+    border-radius: var(--radius-lg);
+    padding: 44px 40px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: 20px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: rgba(255,255,255,0.8);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border-radius: 100px;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 {
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    color: #fff;
+    margin-bottom: 8px;
+    position: relative;
+  }
+
+  .hero p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.65);
+    font-weight: 300;
+    margin-bottom: 28px;
+    position: relative;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    position: relative;
+  }
+
+  .btn-hero-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 11px 22px;
+    background: #fff;
+    color: var(--accent);
+    border-radius: var(--radius);
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all var(--transition);
+    border: none;
+  }
+
+  .btn-hero-primary:hover {
+    background: rgba(255,255,255,0.9);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+
+  .btn-hero-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 11px 22px;
+    background: transparent;
+    color: rgba(255,255,255,0.85);
+    border: 1.5px solid rgba(255,255,255,0.3);
+    border-radius: var(--radius);
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all var(--transition);
+  }
+
+  .btn-hero-ghost:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.5);
+    color: #fff;
+  }
+
+  /* ── Section title ── */
+  .section-title {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── Emergency strip ── */
+  .emergency-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .emergency-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 22px 20px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--transition), transform var(--transition);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .emergency-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--danger);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+
+  .emergency-card:hover {
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+  }
+
+  .emergency-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius);
+    background: #fff0f0;
+    border: 1px solid #f5c6c6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin: 0 auto 12px;
+  }
+
+  .emergency-card h3 {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .emergency-number {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--danger);
+    letter-spacing: 0.02em;
+    margin-bottom: 6px;
+    line-height: 1.1;
+  }
+
+  .emergency-number a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .emergency-number a:hover { text-decoration: underline; }
+
+  .emergency-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 300;
+    line-height: 1.4;
+  }
+
+  /* ── Service cards ── */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .service-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 22px 24px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--transition), transform var(--transition), border-color var(--transition);
+  }
+
+  .service-card:hover {
+    box-shadow: var(--shadow);
+    transform: translateY(-1px);
+    border-color: #ccc;
+  }
+
+  .service-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .service-icon-wrap {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .service-icon-wrap.water      { background: #eef4ff; border-color: #c3d8ff; }
+  .service-icon-wrap.electricity{ background: #fffbf0; border-color: #f5e0a0; }
+  .service-icon-wrap.waste      { background: #edf8f4; border-color: #a5dfc9; }
+  .service-icon-wrap.roads      { background: #fff0f0; border-color: #f5c6c6; }
+  .service-icon-wrap.lights     { background: #faf5ff; border-color: #d9b8ff; }
+  .service-icon-wrap.parks      { background: #f0faf5; border-color: #b7e6cc; }
+
+  .service-card h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.2px;
+  }
+
+  .service-card .service-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 300;
+    margin-top: 2px;
+  }
+
+  .contact-list { display: flex; flex-direction: column; gap: 0; }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+  }
+
+  .contact-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .contact-item:first-child { padding-top: 0; }
+
+  .contact-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 400;
+    flex-shrink: 0;
+  }
+
+  .contact-phone {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color var(--transition);
+  }
+
+  .contact-phone:hover { color: var(--danger); }
+
+  /* ── How-to steps ── */
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 32px;
+    position: relative;
+  }
+
+  .steps-grid::before {
+    content: '';
+    position: absolute;
+    top: 32px;
+    left: calc(33.333% + 8px);
+    right: calc(33.333% + 8px);
+    height: 1px;
+    background: var(--border);
+    z-index: 0;
+    border-top: 1px dashed var(--border);
+  }
+
+  .step-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px 20px;
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+    position: relative;
+    transition: box-shadow var(--transition), transform var(--transition);
+    z-index: 1;
+  }
+
+  .step-card:hover {
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+  }
+
+  .step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .step-card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 7px;
+    letter-spacing: -0.1px;
+  }
+
+  .step-card p {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 300;
+    line-height: 1.55;
+  }
+
+  /* ── Operating hours card ── */
+  .hours-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 22px 24px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 32px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .hours-group h4 {
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .hours-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+    gap: 10px;
+  }
+
+  .hours-row:last-child { border-bottom: none; }
+
+  .hours-day { color: var(--text-secondary); font-weight: 400; }
+  .hours-time {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .hours-time.always-on {
+    color: #1a6b47;
+    background: #edf8f4;
+    border: 1px solid #a5dfc9;
+    padding: 1px 8px;
+    border-radius: 100px;
+    font-size: 11px;
+  }
+
+  /* ── Alert banner ── */
+  .alert-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #fef9ec;
+    border: 1px solid #f5e0a0;
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin-bottom: 32px;
+    font-size: 13px;
+    color: #92660a;
+    line-height: 1.5;
+  }
+
+  .alert-banner strong { font-weight: 600; }
+
+  /* ── Responsive ── */
+  @media (max-width: 720px) {
+    .services-wrapper { padding: 24px 16px 60px; }
+    .hero { padding: 32px 24px; }
+    .hero h1 { font-size: 24px; }
+    .emergency-strip { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr; }
+    .steps-grid::before { display: none; }
+    .hours-card { grid-template-columns: 1fr; gap: 16px; }
+    .hero-actions { flex-direction: column; }
+    .btn-hero-primary, .btn-hero-ghost { justify-content: center; }
+  }
+</style>
+
+<div class="services-wrapper">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge">ℹ️ Municipal Services</div>
+    <h1>Service Contacts & Information</h1>
+    <p>24/7 emergency lines, service contacts, and fault reporting — all in one place.</p>
+    <div class="hero-actions">
+      <a href="/report/" class="btn-hero-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Report a Fault
+      </a>
+      <a href="/report/dashboard/" class="btn-hero-ghost">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        My Dashboard
+      </a>
+    </div>
+  </div>
+
+  <!-- Alert -->
+  <div class="alert-banner">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <span><strong>Emergency?</strong> For life-threatening situations, always call <strong>10111</strong> (SAPS) or <strong>10177</strong> (Ambulance) first. Municipal contacts below are for service faults and infrastructure issues.</span>
+  </div>
+
+  <!-- Emergency contacts -->
+  <div class="section-title">Emergency Contacts</div>
+  <div class="emergency-strip">
+    <div class="emergency-card">
+      <div class="emergency-icon">📞</div>
+      <h3>24/7 Call Centre</h3>
+      <div class="emergency-number"><a href="tel:0538306333">053 830 6333</a></div>
+      <div class="emergency-desc">Water, Electricity, Waste, Roads — all services</div>
+    </div>
+    <div class="emergency-card">
+      <div class="emergency-icon">📱</div>
+      <h3>Toll-Free Line</h3>
+      <div class="emergency-number"><a href="tel:08001229012">0800 122 9012</a></div>
+      <div class="emergency-desc">Free call from any mobile or landline</div>
+    </div>
+    <div class="emergency-card">
+      <div class="emergency-icon">💬</div>
+      <h3>SMS Faults</h3>
+      <div class="emergency-number"><a href="sms:44204">44204</a></div>
+      <div class="emergency-desc">Text your issue details and location</div>
+    </div>
+  </div>
+
+  <!-- Operating hours -->
+  <div class="section-title">Operating Hours</div>
+  <div class="hours-card">
+    <div class="hours-group">
+      <h4>Call Centre</h4>
+      <div class="hours-row"><span class="hours-day">Mon – Fri</span><span class="hours-time always-on">24 / 7</span></div>
+      <div class="hours-row"><span class="hours-day">Sat – Sun</span><span class="hours-time always-on">24 / 7</span></div>
+      <div class="hours-row"><span class="hours-day">Public Holidays</span><span class="hours-time always-on">24 / 7</span></div>
+    </div>
+    <div class="hours-group">
+      <h4>Online Reporting</h4>
+      <div class="hours-row"><span class="hours-day">Web portal</span><span class="hours-time always-on">24 / 7</span></div>
+      <div class="hours-row"><span class="hours-day">SMS line</span><span class="hours-time always-on">24 / 7</span></div>
+      <div class="hours-row"><span class="hours-day">Response target</span><span class="hours-time">48 hrs</span></div>
+    </div>
+  </div>
+
+  <!-- Service cards -->
+  <div class="section-title">Service Departments</div>
+  <div class="services-grid">
+
+    <div class="service-card">
+      <div class="service-card-header">
+        <div class="service-icon-wrap water">💧</div>
+        <div>
+          <h3>Water Services</h3>
+          <div class="service-sub">Leaks, supply, quality</div>
+        </div>
+      </div>
+      <div class="contact-list">
+        <div class="contact-item">
+          <span class="contact-label">Call Centre</span>
+          <a href="tel:0538306333" class="contact-phone">053 830 6333</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">Toll-Free</span>
+          <a href="tel:08001229012" class="contact-phone">0800 122 9012</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">SMS</span>
+          <a href="sms:44204" class="contact-phone">44204</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-card-header">
+        <div class="service-icon-wrap electricity">⚡</div>
+        <div>
+          <h3>Electricity</h3>
+          <div class="service-sub">Faults, outages, smart meters</div>
+        </div>
+      </div>
+      <div class="contact-list">
+        <div class="contact-item">
+          <span class="contact-label">Call Centre</span>
+          <a href="tel:0538306333" class="contact-phone">053 830 6333</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">Smart Meters</span>
+          <a href="tel:0800000404" class="contact-phone">0800 000 0404</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">Toll-Free</span>
+          <a href="tel:08001229012" class="contact-phone">0800 122 9012</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-card-header">
+        <div class="service-icon-wrap waste">🗑️</div>
+        <div>
+          <h3>Waste Collection</h3>
+          <div class="service-sub">Missed collections, illegal dumping</div>
+        </div>
+      </div>
+      <div class="contact-list">
+        <div class="contact-item">
+          <span class="contact-label">Call Centre</span>
+          <a href="tel:0538306333" class="contact-phone">053 830 6333</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">Toll-Free</span>
+          <a href="tel:08001229012" class="contact-phone">0800 122 9012</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">SMS</span>
+          <a href="sms:44204" class="contact-phone">44204</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-card-header">
+        <div class="service-icon-wrap roads">🛣️</div>
+        <div>
+          <h3>Roads & Potholes</h3>
+          <div class="service-sub">Potholes, signage, drainage</div>
+        </div>
+      </div>
+      <div class="contact-list">
+        <div class="contact-item">
+          <span class="contact-label">Call Centre</span>
+          <a href="tel:0538306333" class="contact-phone">053 830 6333</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">SMS</span>
+          <a href="sms:44204" class="contact-phone">44204</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">Toll-Free</span>
+          <a href="tel:08001229012" class="contact-phone">0800 122 9012</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-card-header">
+        <div class="service-icon-wrap lights">🔦</div>
+        <div>
+          <h3>Street Lighting</h3>
+          <div class="service-sub">Broken lights, traffic signals</div>
+        </div>
+      </div>
+      <div class="contact-list">
+        <div class="contact-item">
+          <span class="contact-label">Call Centre</span>
+          <a href="tel:0538306333" class="contact-phone">053 830 6333</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">Toll-Free</span>
+          <a href="tel:08001229012" class="contact-phone">0800 122 9012</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">SMS</span>
+          <a href="sms:44204" class="contact-phone">44204</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-card-header">
+        <div class="service-icon-wrap parks">🌳</div>
+        <div>
+          <h3>Parks & Greenery</h3>
+          <div class="service-sub">Trees, grass cutting, graffiti</div>
+        </div>
+      </div>
+      <div class="contact-list">
+        <div class="contact-item">
+          <span class="contact-label">Call Centre</span>
+          <a href="tel:0538306333" class="contact-phone">053 830 6333</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">Toll-Free</span>
+          <a href="tel:08001229012" class="contact-phone">0800 122 9012</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">SMS</span>
+          <a href="sms:44204" class="contact-phone">44204</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- How to report -->
+  <div class="section-title">How to Report a Fault</div>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-number">1</div>
+      <h3>Choose Issue Type</h3>
+      <p>Visit the report page and select the category that best matches your fault.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-number">2</div>
+      <h3>Pin the Location</h3>
+      <p>Use the map or "Use My Location" to mark the exact fault location.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-number">3</div>
+      <h3>Submit & Track</h3>
+      <p>Add photos and a description, submit, then monitor progress on your dashboard.</p>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
